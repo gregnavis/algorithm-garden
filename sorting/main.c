@@ -4,6 +4,8 @@
 
 #include <time.h>
 
+#include "common.h"
+
 void sort(int[], size_t);
 
 static bool is_sorted(int A[], size_t n)
@@ -55,11 +57,11 @@ static double timestamp()
 
 int main()
 {
-	for (size_t size = 1; size < 1000; size += 1) {
+	for (size_t size = 1; size < MAX_SIZE; size += 1) {
 		printf("%zi\n", size);
 
 		for (int i = 0; i < 10; i++) {
-			int *array = random_array(size, 100);
+			int *array = random_array(size, MAX_VALUE);
 			double start, end;
 
 			start = timestamp();
