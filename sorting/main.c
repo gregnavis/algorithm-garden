@@ -24,7 +24,7 @@ static int random_int(int range)
 	int result;
 	fread(&result, sizeof(result), 1, urandom);
 	fclose(urandom);
-	return result % range;
+	return abs(result % range);
 }
 
 static int *random_array(size_t size, int range)
