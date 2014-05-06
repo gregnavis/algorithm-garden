@@ -24,6 +24,7 @@ The algorithms that are currently implemented are:
   * insertion sort
   * bubble sort
   * heapsort
+  * quicksort
   * counting sort
 
 Each sorting algorithm is run multiple times on inputs of different sizes and
