@@ -21,9 +21,16 @@ void graph_free(struct graph *G)
 void graph_connect(struct graph *G, size_t u, size_t v)
 {
 	matrix_set(G->adjecency, u, v, 1.0f);
+	matrix_set(G->adjecency, v, u, 1.0f);
 }
 
 void graph_disconnect(struct graph *G, size_t u, size_t v)
 {
 	matrix_set(G->adjecency, u, v, 0.0f);
+	matrix_set(G->adjecency, v, u, 0.0f);
+}
+
+int graph_is_connected(const struct graph *G, size_t u, size_t v)
+{
+	return matrix_get(G->adjecency, u, v) != 0.0f;
 }
