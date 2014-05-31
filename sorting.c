@@ -43,41 +43,37 @@ static void print_array(FILE *f, int array[], size_t size)
 	}
 }
 
-static double nsec2sec(long nsec)
+static double nsec2usec(long nsec)
 {
-	return nsec / 1000000000.0;
+	return nsec / 1000.0;
 }
 
 static double timestamp()
 {
 	struct timespec now;
 	clock_gettime(CLOCK_MONOTONIC_RAW, &now);
-	return nsec2sec(now.tv_nsec) + now.tv_sec;
+	return nsec2usec(now.tv_nsec) + now.tv_sec;
 }
 
 int main()
 {
-	for (size_t size = 1; size < MAX_SIZE; size += 1) {
-		printf("%zi\n", size);
+	for (size_t size = 0; size < MAX_SIZE; size += 100) {
+		printf("%zi ", size);
 
-		for (int i = 0; i < 10; i++) {
-			int *array = random_array(size, MAX_VALUE);
-			double start, end;
+		int *array = random_array(size, MAX_VALUE);
+		double start, end;
 
-			start = timestamp();
-			sort(array, size);
-			end = timestamp();
+		start = timestamp();
+		sort(array, size);
+		end = timestamp();
 
-			printf("%f ", end - start);
+		printf("%.1f\n", end - start);
 
-			if (!is_sorted(array, size)) {
-				fprintf(stderr, "Unsorted array:\n");
-				print_array(stderr, array, size);
-				return 1;
-			}
+		if (!is_sorted(array, size)) {
+			fprintf(stderr, "Unsorted array:\n");
+			print_array(stderr, array, size);
+			return 1;
 		}
-
-		printf("\n");
 	}
 	return 0;
 }

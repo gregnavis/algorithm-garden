@@ -12,3 +12,7 @@ sorting/%: sorting/%.c sorting.c common.h
 .PHONY: clean
 clean:
 	rm $(TARGETS)
+
+.PHONY: data
+data:
+	./generate $(TARGETS) > report/data.js

@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+# coding: utf-8
+
+require 'json'
+
+$categories = Hash.new do |categories, category|
+  categories[category] = []
+end
+
+ARGV.each do |path|
+  category, algorithm = path.split('/')
+  $categories[category] << {
+    'name' => algorithm,
+    'data' => `#{path}`.each_line.map do |line|
+      input_size, time = line.chomp.split(' ')
+      [input_size.to_i, time.to_f]
+    end
+  }
+end
+
+$results = $categories.map do |name, algorithms|
+  {'name' => name, 'algorithms' => algorithms}
+end
+
+puts <<EOF
+;(function () {
+window.data = #{JSON.pretty_generate($results)};
+})();
+EOF
