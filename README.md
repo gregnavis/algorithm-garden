@@ -26,6 +26,7 @@ The algorithms that are currently implemented are:
   * heapsort
   * quicksort
   * counting sort
+  * radix sort
 
 Each sorting algorithm is run multiple times on inputs of different sizes and
 otuputs two rows for each iteration:
