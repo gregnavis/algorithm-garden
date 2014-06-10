@@ -1,7 +1,3 @@
-#ifndef MAX_SIZE
-#define MAX_SIZE 1000
-#endif
-
 #ifndef MAX_VALUE
 #define MAX_VALUE 1000
 #endif

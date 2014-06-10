@@ -55,9 +55,20 @@ static double timestamp()
 	return nsec2usec(now.tv_nsec) + now.tv_sec;
 }
 
-int main()
+#define EXPECTED_ARGC 4
+
+int main(int argc, char *argv[])
 {
-	for (size_t size = 0; size < MAX_SIZE; size += 100) {
+	if (argc != EXPECTED_ARGC) {
+		fprintf(stderr, "Usage: %s from to step\n", argv[0]);
+		return 2;
+	}
+
+	size_t from = atoi(argv[1]);
+	size_t to = atoi(argv[2]);
+	size_t step = atoi(argv[3]);
+
+	for (size_t size = from; size <= to; size += step) {
 		printf("%zi ", size);
 
 		int *array = random_array(size, MAX_VALUE);
@@ -75,5 +86,6 @@ int main()
 			return 1;
 		}
 	}
+
 	return 0;
 }
