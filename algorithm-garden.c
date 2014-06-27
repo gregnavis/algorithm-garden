@@ -422,6 +422,42 @@ void heap_sort(int A[], size_t n)
 	}
 }
 
+// Radix sort
+// ----------
+
+// Return the `I`-th hexadecimal digit of `x`.
+static int key(int x, size_t I)
+{
+	return (x >> (4 * I)) & 0x0F;
+}
+
+// A variant of insertion sort that uses hexadecimal digits as keys. Production
+// code should have a single insertion sort with parametrised key but this
+// isn't production, is it?
+static void radix_insertion_sort(int A[], size_t n, size_t I)
+{
+	for (size_t i = 1; i < n; i++) {
+		size_t j = i - 1;
+
+		do {
+			if (key(A[j], I) > key(A[j + 1], I)) {
+				swap(A[j], A[j + 1]);
+			}
+		} while(j-- > 0);
+	}
+}
+
+// Sort `A` using radix sort. The algorithm relies on the fact that insertion
+// sort is stable. We sort multiple times using more significant digits in each
+// iteration of the loop. Insertion sort can be replaced with any other stable
+// sorting algorithm (i.e. preserving the order of elements with equal keys).
+void radix_sort(int A[], size_t n)
+{
+	for (size_t I = 0; I < 8 * sizeof(*A) / 4; I++) {
+		radix_insertion_sort(A, n, I);
+	}
+}
+
 // Number theory
 // =============
 

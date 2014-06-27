@@ -25,6 +25,7 @@ The algorithms that are currently implemented are:
   * heapsort
   * quicksort
   * counting sort
+  * radix sort
 
 Number theory
 -------------
