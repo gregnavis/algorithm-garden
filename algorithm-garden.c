@@ -1,3 +1,19 @@
+// Algorithm Garden
+// ================
+
+// The goal of the Algorithm Garden is to demonstrate simple implementations
+// of the core compute science algorithms. The implementation language is C
+// because it gives great control over the machine and is simple to write and
+// understand.
+
+// Includes
+// ========
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
 // Helpers
 // =======
 
@@ -323,7 +339,6 @@ static size_t right(size_t i)
 // Return the parent of `i`.
 static size_t parent(size_t i)
 {
-	assert(i > 0);
 	return ((i + 1) >> 1) - 1;
 }
 
@@ -405,4 +420,34 @@ void heap_sort(int A[], size_t n)
 		int max = extract_max(A, n - i);
 		A[n - i - 1] = max;
 	}
+}
+
+// Number theory
+// =============
+
+// Return the greatest common divisor of `a` and `b`. The procedure implements
+// the Euclidean Algorithm.
+int gcd(int a, int b)
+{
+	a = abs(a);
+	b = abs(b);
+
+	// Ensure that `a` is greater than `b`.
+	if (b > a) {
+		return gcd(b, a);
+	}
+
+	// The quotient.
+	int q = a / b;
+
+	// The reminder.
+	int r = a % b;
+
+	// If `b` divides `a` then `b` is the GCD.
+	if (r == 0) {
+		return b;
+	}
+
+	// An expression of a mathematical fact that GCD(a, b) = GCD(b, r).
+	return gcd(b, r);
 }
