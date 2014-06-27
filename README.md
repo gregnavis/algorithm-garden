@@ -25,3 +25,11 @@ The algorithms that are currently implemented are:
   * heapsort
   * quicksort
   * counting sort
+
+Number theory
+-------------
+
+  * iterative and recursive Euclidean algorithm
+  * least common multiple
+  * Fermat primarility test
+

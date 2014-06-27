@@ -425,29 +425,91 @@ void heap_sort(int A[], size_t n)
 // Number theory
 // =============
 
-// Return the greatest common divisor of `a` and `b`. The procedure implements
-// the Euclidean Algorithm.
-int gcd(int a, int b)
+// Power Modulo n
+// --------------
+
+// Return `b^n mod m`. In order to avoid overflows the procedure reduces `b`
+// modulo `m` before entering the loop and after each iteration.
+int pow_mod(int b, int n, int m)
 {
+	int result = 1;
+	for (b = b % m; n; n--) {
+		result = (result * b) % m;
+	}
+	return result;
+}
+
+// Greatest Common Divisor
+// -----------------------
+
+// Return the greatest common divisor of `a` and `b`. The procedure implements
+// the recursive Euclidean algorithm.
+int recursive_euclidean_gcd(int a, int b)
+{
+	// Ignore the signs and ensure that `a` is greater than `b`.
 	a = abs(a);
 	b = abs(b);
-
-	// Ensure that `a` is greater than `b`.
 	if (b > a) {
-		return gcd(b, a);
+		swap(a, b);
 	}
 
-	// The quotient.
-	int q = a / b;
-
-	// The reminder.
-	int r = a % b;
-
 	// If `b` divides `a` then `b` is the GCD.
+	int r = a % b;
 	if (r == 0) {
 		return b;
 	}
 
 	// An expression of a mathematical fact that GCD(a, b) = GCD(b, r).
-	return gcd(b, r);
+	return recursive_euclidean_gcd(b, r);
+}
+
+int iterative_euclidean_gcd(int a, int b)
+{
+	// Ignore the signs and ensure that `a` is greater than `b`.
+	a = abs(a);
+	b = abs(b);
+	if (a < b) {
+		swap(a, b);
+	}
+
+	int r;
+
+	while ((r = a % b) != 0) {
+		a = b;
+		b = r;
+	}
+
+	return b;
+}
+
+// Least Common Multiple
+// ---------------------
+
+// Return the least common multiple of `a` and `b`. The implementation uses the
+// fact that LCM(a, b) GCD(a, b) = ab.
+int lcm(int a, int b)
+{
+	return abs(a * b / recursive_euclidean_gcd(a, b));
+}
+
+// Fermat Primarility Test
+// -----------------------
+
+// The test uses the fact that `a^p = a` modulo `p` if `p` is a prime number.
+// Therefore if the equality above doesn't hold for some `a` then `p` is not
+// a prime. However even when the equality holds for all `a`s it *does not*
+// mean that `p` is a prime. Composite numbers that pass the test are called
+// Carmichael numbers. The first such number is 561.
+
+// Return `true` if there's a chance that `p` is prime, `false` if it's
+// certainly not a prime.
+bool fermat_prime(int p, int tests)
+{
+	while (tests) {
+		int a = rand();
+		if (pow_mod(a, p - 1, p) != 1) {
+			return false;
+		}
+	}
+	return true;
 }
