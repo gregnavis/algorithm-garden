@@ -475,6 +475,19 @@ int pow_mod(int b, int n, int m)
 	return result;
 }
 
+// An alternative to the procedure above that uses binary exponentation.
+int binary_pow_mod(int b, int n, int m)
+{
+	int result = 1;
+	for (b = b % m; n > 0; n >>= 1) {
+		if (n & 1 == 1) {
+			result = (result * b) % m;
+		}
+		b = (b * b) % m;
+	}
+	return result;
+}
+
 // Greatest Common Divisor
 // -----------------------
 
