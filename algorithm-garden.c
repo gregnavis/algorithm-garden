@@ -562,3 +562,55 @@ bool fermat_prime(int p, int tests)
 	}
 	return true;
 }
+
+// Trees
+// =====
+
+// Binary trees
+// ------------
+
+struct binary_tree {
+	int key;
+	struct binary_tree *left_child;
+	struct binary_tree *right_child;
+};
+
+typedef void (*binary_tree_visitor)(int);
+
+// The three traversal algorithms below are the fundamental depth first
+// traversal algorithms. The left subtree is always visited before the right
+// subtree. However the current element is visited before the left tree (in
+// pre-order traveral), after the left but before right (in-order traversal) or
+// after the right tree (post-order traversal).
+void traverse_preorder(struct binary_tree *tree, binary_tree_visitor visitor)
+{
+	if (!tree) {
+		return;
+	}
+
+	visitor(tree->key);
+	traverse_preorder(tree->left_child, visitor);
+	traverse_preorder(tree->right_child, visitor);
+}
+
+void traverse_inorder(struct binary_tree *tree, binary_tree_visitor visitor)
+{
+	if (!tree) {
+		return;
+	}
+
+	traverse_preorder(tree->left_child, visitor);
+	visitor(tree->key);
+	traverse_preorder(tree->right_child, visitor);
+}
+
+void traverse_postorder(struct binary_tree *tree, binary_tree_visitor visitor)
+{
+	if (!tree) {
+		return;
+	}
+
+	traverse_preorder(tree->left_child, visitor);
+	traverse_preorder(tree->right_child, visitor);
+	visitor(tree->key);
+}
