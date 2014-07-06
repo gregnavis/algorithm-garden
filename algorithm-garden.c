@@ -563,19 +563,32 @@ bool fermat_prime(int p, int tests)
 	return true;
 }
 
-// Trees
-// =====
-
 // Binary trees
-// ------------
+// ============
 
+// Definition
+// ----------
+
+// A binary tree is, by definition, a tree whose nodes have at most two
+// children. It's the simples type of a tree yet very useful. The traditional
+// names of subtrees are left and right subtree.
+
+// This data structure defines a single node of a tree. `key` is the value
+// stored at the node. `left_child` and `right_child` point to the subtrees. If
+// there's no corresponding subtree then the corresponding pointer is set to
+// `NULL`. A leaf node has both pointers set to `NULL`.
 struct binary_tree {
 	int key;
 	struct binary_tree *left_child;
 	struct binary_tree *right_child;
 };
 
+// A procedure used for traversing a tree. It's only argument is the key of the
+// currently visited node.
 typedef void (*binary_tree_visitor)(int);
+
+// Traversal
+// ---------
 
 // The three traversal algorithms below are the fundamental depth first
 // traversal algorithms. The left subtree is always visited before the right
@@ -613,4 +626,62 @@ void traverse_postorder(struct binary_tree *tree, binary_tree_visitor visitor)
 	traverse_preorder(tree->left_child, visitor);
 	traverse_preorder(tree->right_child, visitor);
 	visitor(tree->key);
+}
+
+// Operations
+// ----------
+
+// Return the number of nodes in a binary tree.
+int binary_tree_size(struct binary_tree *tree)
+{
+	// An empty tree has size zero.
+	if (!tree) {
+		return 0;
+	}
+
+	// The size of a non-empty tree has three components: the current node
+	// (corresponding to `1`), the size of the left subtree and the size of the
+	// right subtree.
+	return 1 + binary_tree_size(tree->left_child) +
+		binary_tree_size(tree->right_child);
+}
+
+// Return the maximum depth of a binary tree.
+int binary_tree_max_depth(struct binary_tree *tree)
+{
+	// The depth of an empty tree is zero.
+	if (!tree) {
+		return 0;
+	}
+
+	// The depth of the tree is one (corresponding to the current node) plus
+	// the depth of a subtree.
+	int left_max_depth = binary_tree_max_depth(tree->left_child);
+	int right_max_depth = binary_tree_max_depth(tree->right_child);
+	return 1 + max(left_max_depth, right_max_depth);
+}
+
+// Return `true` if two trees have the same structure, `false` otherwise.
+bool binary_tree_equal(struct binary_tree *tree1, struct binary_tree *tree2)
+{
+	// The tree is obviously equal to itself. This also handles the case of
+	// empty trees.
+	if (tree1 == tree2) {
+		return true;
+	}
+
+	// A non-empty tree cannot be equal to an empty tree.
+	if (!tree1 || !tree2) {
+		return false;
+	}
+
+	// If the keys of the corresponding nodes are different then the trees
+	// are different.
+	if (tree1->key != tree2->key) {
+		return false;
+	}
+
+	// If the keys are equal then both subtrees must be equal.
+	return binary_tree_equal(tree1->left_child, tree2->left_child) &&
+		binary_tree_equal(tree1->right_child, tree2->right_child);
 }
