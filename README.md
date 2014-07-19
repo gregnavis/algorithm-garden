@@ -30,7 +30,21 @@ The algorithms that are currently implemented are:
 Number theory
 -------------
 
+  * powers modulo an integer
   * iterative and recursive Euclidean algorithm
   * least common multiple
   * Fermat primarility test
 
+Binary trees
+------------
+
+  * pre-order, in-order and post-order traversal
+  * tree size
+  * tree height
+  * equality testing
+
+Binary search trees
+-------------------
+
+  * checking the binary search tree condition
+  * finding an element in a binary search tree
