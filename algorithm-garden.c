@@ -685,3 +685,61 @@ bool binary_tree_equal(struct binary_tree *tree1, struct binary_tree *tree2)
 	return binary_tree_equal(tree1->left_child, tree2->left_child) &&
 		binary_tree_equal(tree1->right_child, tree2->right_child);
 }
+
+// Binary search trees
+// ===================
+
+// Definition
+// ----------
+
+// A binary search tree is a binary tree satisfying the following condition: the
+// left subtree of a node contains keys less than the node's key; the right
+// subtree of a node contains keys greater than the node's key.
+//
+// We reuse the `binary_tree` structure defined above but add procedures
+// specific for binary search trees.
+
+static bool is_binary_search_tree_internal(struct binary_tree *tree,
+		int min, int max)
+{
+	// An empty tree is a binary search tree.
+	if (tree == NULL) {
+		return true;
+	}
+
+	// If the key is not within the `[min..max]` range then the tree isn't a
+	// binary search tree.
+	if (tree->key < min || tree->key > max) {
+		return false;
+	}
+
+	// Recursively verify the left and right subtrees.
+	return is_binary_search_tree_internal(tree->left, min, tree->key) &&
+		is_binary_search_tree_internal(tree->right, tree->key, max);
+}
+
+bool is_binary_search_tree(struct binary_tree *tree)
+{
+	return is_binary_search_tree_internal(tree, INT_MIN, INT_MAX);
+}
+
+struct binary_tree *binary_search_tree_find(struct binary_tree *tree, int key)
+{
+	// We definitely won't find anything in an empty tree.
+	if (tree == NULL) {
+		return NULL;
+	}
+
+	// Using the property of a binary search tree decide whether to recurse
+	// to a left or right subtree. If none of the two inequalities are true
+	// then the current node is the one we're looking for.
+	if (key < tree->key) {
+		return tree->left;
+	}
+
+	if (key > tree->key) {
+		return tree->right;
+	}
+
+	return tree;
+}
