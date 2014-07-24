@@ -743,3 +743,21 @@ struct binary_tree *binary_search_tree_find(struct binary_tree *tree, int key)
 
 	return tree;
 }
+
+void binary_search_tree_insert(struct binary_tree *tree, int key)
+{
+	struct binary_tree **next;
+
+	if (key < tree->key) {
+		next = &tree->left;
+	}
+	else if (key > tree->key) {
+		next = &tree->right;
+	}
+
+	if (*next) {
+		binary_search_tree_insert(*next, key);
+	} else {
+		*next = binary_tree_new(key, NULL, NULL);
+	}
+}
